@@ -1,46 +1,17 @@
 // Elevator Management Panic - Step 1 & 2: Building layout and elevator movement
+import Elevator from "./classes/Elevator.js";
+
+// These constants are needed by Elevator, so export them for use in Elevator.js
+export const FLOOR_COUNT = 8;
+export const FLOOR_HEIGHT = 60;
+export const FLOOR_START_Y = 80;
+export const ELEVATOR_X = [250, 350];
+export const ELEVATOR_WIDTH = 40;
+export const ELEVATOR_HEIGHT = 40;
+
 const passengers = []; // Array to track passengers
-const FLOOR_COUNT = 8;
-const FLOOR_HEIGHT = 60;
-const FLOOR_START_Y = 80;
+
 const FLOOR_LABEL_X = 100;
-const ELEVATOR_X = [250, 350]; // X positions for two elevators
-const ELEVATOR_WIDTH = 40;
-const ELEVATOR_HEIGHT = 40;
-
-class Elevator {
-  constructor(scene, index) {
-    this.scene = scene;
-    this.index = index;
-    this.currentFloor = 1;
-    this.targetFloor = 1;
-    this.isMoving = false;
-    this.passenger = null;
-    this.rect = scene.add.rectangle(
-      ELEVATOR_X[index],
-      getFloorY(this.currentFloor),
-      ELEVATOR_WIDTH,
-      ELEVATOR_HEIGHT,
-      0x00aaff
-    );
-    this.rect.setOrigin(0.5, 0.5);
-  }
-
-  moveToFloor(floor) {
-    if (this.isMoving || floor < 1 || floor > FLOOR_COUNT) return;
-    this.targetFloor = floor;
-    this.isMoving = true;
-    this.scene.tweens.add({
-      targets: this.rect,
-      y: getFloorY(floor),
-      duration: 500,
-      onComplete: () => {
-        this.currentFloor = floor;
-        this.isMoving = false;
-      },
-    });
-  }
-}
 
 const floorPositions = [];
 const floorSpacing = 60;
@@ -50,7 +21,7 @@ for (let i = 0; i < FLOOR_COUNT; i++) {
   floorPositions.push(buildingTop + i * floorSpacing);
 }
 
-function getFloorY(floor) {
+export function getFloorY(floor) {
   // Floor 1 is at the bottom
   return FLOOR_START_Y + (FLOOR_COUNT - floor) * FLOOR_HEIGHT;
 }
